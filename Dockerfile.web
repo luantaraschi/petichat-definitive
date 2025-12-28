@@ -1,0 +1,49 @@
+# ================================
+# Build Stage
+# ================================
+FROM node:20-alpine AS builder
+
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy workspace config files
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY packages/shared/package.json ./packages/shared/
+COPY apps/web/package.json ./apps/web/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY packages/shared ./packages/shared
+COPY apps/web ./apps/web
+COPY tsconfig.json ./
+
+# Build the project
+# ARG VITE_API_URL can be passed during build if needed, 
+# but usually for client-side apps the env vars must be present at build time
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
+WORKDIR /app
+RUN pnpm --filter @petichat/web build
+
+# ================================
+# Production Stage
+# ================================
+FROM nginx:alpine AS runner
+
+# Copy built files from builder
+COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
+
+# Copy custom nginx config
+COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
