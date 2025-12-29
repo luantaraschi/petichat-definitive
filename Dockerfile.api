@@ -30,6 +30,7 @@ RUN pnpm db:generate
 
 # Build the project
 WORKDIR /app
+RUN pnpm --filter @petichat/shared build
 RUN pnpm --filter @petichat/api build
 
 # Prune dev dependencies to keep the image small
