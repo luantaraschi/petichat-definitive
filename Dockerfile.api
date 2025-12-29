@@ -8,16 +8,23 @@ RUN apk add --no-cache libc6-compat
 # Set working directory
 WORKDIR /app
 
-# Enable pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Enable pnpm with fixed version for deterministic builds
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy workspace config files first to cache dependencies
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/api/package.json ./apps/api/
 
-# Install dependencies (frozen lockfile for reproducibility)
-RUN pnpm install --frozen-lockfile
+# Debug output for troubleshooting
+RUN echo "=== Build Environment ===" && \
+    node -v && \
+    corepack --version && \
+    pnpm -v && \
+    pnpm config get registry
+
+# Install dependencies (frozen lockfile for reproducibility, extended timeout for network flakes)
+RUN pnpm install --frozen-lockfile --network-timeout 600000
 
 # Copy source code
 COPY packages/shared ./packages/shared
