@@ -2,7 +2,7 @@
 // Cases Routes
 // ================================
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance, FastifyReply } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
 import { createCaseSchema, updateCaseSchema, paginationSchema } from '@petichat/shared';
 
@@ -33,7 +33,7 @@ export async function casesRoutes(fastify: FastifyInstance) {
                 clientName: body.clientName,
                 caseType: body.caseType,
                 factsDescription: body.factsDescription,
-                metadata: body.metadata || {},
+                metadata: (body.metadata || {}) as any,
                 status: 'draft',
             },
         });
@@ -55,7 +55,7 @@ export async function casesRoutes(fastify: FastifyInstance) {
     // ================================
     // GET /api/cases - List cases
     // ================================
-    fastify.get('/', async (request: any, reply: FastifyReply) => {
+    fastify.get('/', async (request: any, _reply: FastifyReply) => {
         const lawFirmId = request.user.lawFirmId;
         const query = paginationSchema.parse(request.query);
         const { page, limit, sortBy, sortOrder } = query;
@@ -158,7 +158,7 @@ export async function casesRoutes(fastify: FastifyInstance) {
 
         const updatedCase = await fastify.prisma.case.update({
             where: { id },
-            data: body,
+            data: body as any,
         });
 
         return updatedCase;

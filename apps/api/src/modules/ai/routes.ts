@@ -121,12 +121,12 @@ export async function aiRoutes(fastify: FastifyInstance) {
             const generatedDoc = await aiService.generateDocument({
                 facts: caseData.factsDescription,
                 documentType: body.documentType,
-                theses: caseData.theses.map((t) => ({
-                    category: t.category,
+                theses: caseData.theses.map((t: { category: string; title: string; content: string }) => ({
+                    category: t.category as 'preliminares' | 'merito',
                     title: t.title,
                     content: t.content,
                 })),
-                jurisprudences: jurisprudences.map((j) => ({
+                jurisprudences: jurisprudences.map((j: { tribunal: string; processNumber: string; summary: string }) => ({
                     tribunal: j.tribunal,
                     processNumber: j.processNumber,
                     summary: j.summary,
@@ -145,7 +145,7 @@ export async function aiRoutes(fastify: FastifyInstance) {
                     documentType: body.documentType,
                     status: 'draft',
                     contentHtml: generatedDoc.contentHtml,
-                    sections: generatedDoc.sections,
+                    sections: generatedDoc.sections as any,
                 },
             });
 

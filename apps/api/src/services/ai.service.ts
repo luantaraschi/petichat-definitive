@@ -6,7 +6,7 @@
 // API keys are read from environment variables.
 
 import OpenAI from 'openai';
-import { z } from 'zod';
+// z from zod removed - not used directly
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { aiThesisResponseSchema, aiDocumentResponseSchema } from '@petichat/shared';
 
@@ -208,13 +208,13 @@ Responda em formato JSON:
 
             // Combine sections into HTML
             const contentHtml = validated.sections
-                .map((s) => `<section><h2>${s.title}</h2>${s.content}</section>`)
+                .map((s: { title: string; content: string }) => `<section><h2>${s.title}</h2>${s.content}</section>`)
                 .join('');
 
             return {
                 title: validated.title,
                 contentHtml,
-                sections: validated.sections.map((s, i) => ({ ...s, order: i })),
+                sections: validated.sections.map((s: { type: string; title: string; content: string }, i: number) => ({ ...s, order: i })),
             };
         } catch (error) {
             console.error('Error generating document:', error);
@@ -408,13 +408,13 @@ Responda APENAS em formato JSON:
 
             // Combine sections into HTML
             const contentHtml = validated.sections
-                .map((s) => `<section><h2>${s.title}</h2>${s.content}</section>`)
+                .map((s: { title: string; content: string }) => `<section><h2>${s.title}</h2>${s.content}</section>`)
                 .join('');
 
             return {
                 title: validated.title,
                 contentHtml,
-                sections: validated.sections.map((s, i) => ({ ...s, order: i })),
+                sections: validated.sections.map((s: { type: string; title: string; content: string }, i: number) => ({ ...s, order: i })),
             };
         } catch (error) {
             console.error('Error generating document (Google):', error);
@@ -459,7 +459,7 @@ Reescreva o texto conforme a instrução. Mantenha a essência jurídica e retor
 // ================================
 
 class MockAIProvider implements AIProvider {
-    async suggestTheses(facts: string, options?: ThesisOptions): Promise<ThesisResult[]> {
+    async suggestTheses(_facts: string, _options?: ThesisOptions): Promise<ThesisResult[]> {
         // Simulate delay
         await new Promise((r) => setTimeout(r, 1000));
 

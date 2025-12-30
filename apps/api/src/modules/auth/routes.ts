@@ -32,7 +32,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         const passwordHash = await bcrypt.hash(password, 12);
 
         // Create law firm and user in transaction
-        const result = await fastify.prisma.$transaction(async (tx) => {
+        const result = await fastify.prisma.$transaction(async (tx: any) => {
             // Create law firm
             const lawFirm = await tx.lawFirm.create({
                 data: {
@@ -73,10 +73,11 @@ export async function authRoutes(fastify: FastifyInstance) {
             lawFirmId: result.lawFirm.id,
         });
 
+        const refreshTokenExpiresIn = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
         const refreshToken = jwt.sign(
             { id: result.user.id, type: 'refresh' },
             fastify.jwtRefreshSecret,
-            { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+            { expiresIn: refreshTokenExpiresIn as any }
         );
 
         // Store refresh token in Redis (with TTL of 7 days)
@@ -142,10 +143,11 @@ export async function authRoutes(fastify: FastifyInstance) {
             lawFirmId: lawFirm?.id,
         });
 
+        const refreshTokenExpiresIn = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
         const refreshToken = jwt.sign(
             { id: user.id, type: 'refresh' },
             fastify.jwtRefreshSecret,
-            { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+            { expiresIn: refreshTokenExpiresIn as any }
         );
 
         // Store refresh token in Redis
@@ -248,7 +250,7 @@ export async function authRoutes(fastify: FastifyInstance) {
     // ================================
     fastify.post('/logout', {
         onRequest: [(fastify as any).authenticate],
-        handler: async (request: any, reply: FastifyReply) => {
+        handler: async (request: any, _reply: FastifyReply) => {
             const userId = request.user.id;
 
             // Delete all refresh tokens for this user

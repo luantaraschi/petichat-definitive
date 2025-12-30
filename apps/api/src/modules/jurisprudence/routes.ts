@@ -12,7 +12,7 @@ export async function jurisprudenceRoutes(fastify: FastifyInstance) {
     // ================================
     // POST /api/jurisprudence/search
     // ================================
-    fastify.post('/search', async (request: any, reply: FastifyReply) => {
+    fastify.post('/search', async (request: any, _reply: FastifyReply) => {
         const body = searchJurisprudenceSchema.parse(request.body);
         const { keywords, tribunal, year, page, limit } = body;
 
@@ -89,7 +89,7 @@ export async function jurisprudenceRoutes(fastify: FastifyInstance) {
     // ================================
     // GET /api/jurisprudence/tribunals - List available tribunals
     // ================================
-    fastify.get('/tribunals/list', async (request: any, reply: FastifyReply) => {
+    fastify.get('/tribunals/list', async (_request: any, _reply: FastifyReply) => {
         const tribunals = await fastify.prisma.jurisprudence.findMany({
             select: { tribunal: true },
             distinct: ['tribunal'],
@@ -97,7 +97,7 @@ export async function jurisprudenceRoutes(fastify: FastifyInstance) {
         });
 
         return {
-            tribunals: tribunals.map((t) => t.tribunal),
+            tribunals: tribunals.map((t: { tribunal: string }) => t.tribunal),
         };
     });
 }

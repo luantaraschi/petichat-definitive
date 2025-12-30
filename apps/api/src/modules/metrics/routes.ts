@@ -31,7 +31,7 @@ export async function metricsRoutes(fastify: FastifyInstance) {
                 lawFirmId,
                 userId,
                 eventType: body.eventType,
-                metadata: body.metadata || {},
+                metadata: (body.metadata || {}) as any,
             },
         });
 
@@ -127,7 +127,7 @@ export async function metricsRoutes(fastify: FastifyInstance) {
                 timeSavedMinutes,
                 timeSavedFormatted: `${Math.floor(timeSavedMinutes / 60)}h ${timeSavedMinutes % 60}min`,
             },
-            documentsByType: documentsByType.map((d) => ({
+            documentsByType: documentsByType.map((d: { documentType: string; _count: { id: number } }) => ({
                 type: d.documentType,
                 count: d._count.id,
             })),
@@ -135,7 +135,7 @@ export async function metricsRoutes(fastify: FastifyInstance) {
                 callsLast7Days: aiUsage._count.id,
                 tokensUsed: (aiUsage._sum.promptTokens || 0) + (aiUsage._sum.completionTokens || 0),
             },
-            recentDocuments: recentDocuments.map((d) => ({
+            recentDocuments: recentDocuments.map((d: { id: string; title: string; documentType: string; status: string; case: { clientName: string }; createdAt: Date }) => ({
                 id: d.id,
                 title: d.title,
                 documentType: d.documentType,
@@ -182,8 +182,8 @@ export async function metricsRoutes(fastify: FastifyInstance) {
         const limits = planLimits[lawFirm.subscriptionPlan] || planLimits.trial;
 
         // Get current usage this month
-        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         const now = new Date();
+        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
         const [documentsThisMonth, aiCallsThisMonth] = await Promise.all([
             fastify.prisma.legalDocument.count({

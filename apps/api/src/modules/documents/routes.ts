@@ -64,7 +64,7 @@ export async function documentsRoutes(fastify: FastifyInstance) {
     // ================================
     // GET /api/documents - List documents
     // ================================
-    fastify.get('/', async (request: any, reply: FastifyReply) => {
+    fastify.get('/', async (request: any, _reply: FastifyReply) => {
         const lawFirmId = request.user.lawFirmId;
         const query = paginationSchema.parse(request.query);
         const { page, limit, sortBy, sortOrder } = query;

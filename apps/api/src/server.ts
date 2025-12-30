@@ -9,7 +9,6 @@ import jwt from '@fastify/jwt';
 import rateLimit from '@fastify/rate-limit';
 import { PrismaClient } from '@prisma/client';
 import Redis from 'ioredis';
-import pino from 'pino';
 
 // Import routes
 import { authRoutes } from './modules/auth/routes';
@@ -43,24 +42,21 @@ export const redis = new Redis(REDIS_URL, {
     lazyConnect: true,
 });
 
-// Logger
-const logger = pino({
-    level: LOG_LEVEL,
-    transport:
-        process.env.NODE_ENV !== 'production'
-            ? {
-                target: 'pino-pretty',
-                options: { colorize: true },
-            }
-            : undefined,
-});
-
 // ================================
 // Create Fastify Instance
 // ================================
 
 const fastify = Fastify({
-    logger,
+    logger: {
+        level: LOG_LEVEL,
+        transport:
+            process.env.NODE_ENV !== 'production'
+                ? {
+                    target: 'pino-pretty',
+                    options: { colorize: true },
+                }
+                : undefined,
+    },
 });
 
 // ================================
@@ -171,7 +167,7 @@ async function registerRoutes() {
 // Error Handler
 // ================================
 
-fastify.setErrorHandler((error, request, reply) => {
+fastify.setErrorHandler((error, _request, reply) => {
     fastify.log.error(error);
 
     // Zod validation errors
