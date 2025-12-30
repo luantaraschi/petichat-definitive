@@ -22,8 +22,11 @@ RUN echo "=== Build Environment ===" && \
     pnpm -v && \
     pnpm config get registry
 
-# Install dependencies (frozen lockfile for reproducibility, extended timeout for network flakes)
-RUN pnpm install --frozen-lockfile --network-timeout 600000
+# Configure network settings and install dependencies
+RUN pnpm config set fetch-retries 5 && \
+    pnpm config set fetch-retry-mintimeout 20000 && \
+    pnpm config set fetch-retry-maxtimeout 120000 && \
+    pnpm install --frozen-lockfile
 
 # Copy source code
 COPY packages/shared ./packages/shared
