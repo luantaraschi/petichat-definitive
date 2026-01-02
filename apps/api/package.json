@@ -2,6 +2,7 @@
     "name": "@petichat/api",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "npx tsx@4.7.0 src/server.ts",
         "build": "tsc",
