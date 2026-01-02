@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # ================================
-  # PostgreSQL Database
+  # PostgreSQL Database (Fica só na rede interna)
   # ================================
   db:
     image: postgres:15-alpine
@@ -25,7 +25,7 @@ services:
       - petichat-network
 
   # ================================
-  # Redis Cache
+  # Redis Cache (Fica só na rede interna)
   # ================================
   redis:
     image: redis:7-alpine
@@ -44,7 +44,7 @@ services:
       - petichat-network
 
   # ================================
-  # API Backend
+  # API Backend (Precisa entrar na rede Coolify)
   # ================================
   api:
     build:
@@ -63,7 +63,6 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY:-}
       AI_PROVIDER: ${AI_PROVIDER:-openai}
-      # CORS: Allow requests from the web container (same origin in production)
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
     ports:
       - "3001:3001"
@@ -80,9 +79,10 @@ services:
     restart: always
     networks:
       - petichat-network
-
+      - coolify
+      
   # ================================
-  # Frontend Web App (Nginx)
+  # Frontend Web App (Precisa entrar na rede Coolify)
   # ================================
   web:
     build:
@@ -101,6 +101,7 @@ services:
     restart: always
     networks:
       - petichat-network
+      - coolify 
 
 # ================================
 # Volumes & Networks
@@ -112,3 +113,5 @@ volumes:
 networks:
   petichat-network:
     driver: bridge
+  coolify:   
+    external: true
