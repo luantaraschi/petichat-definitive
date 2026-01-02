@@ -52,10 +52,13 @@ RUN pnpm --filter @petichat/api --prod deploy deployed
 WORKDIR /app/deployed
 COPY apps/api/prisma ./prisma
 
-# Copy the pre-generated Prisma Client from the main build
-# The .prisma folder is inside the @prisma/client package in pnpm's structure
-RUN mkdir -p node_modules/.prisma && \
-    cp -r /app/node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client node_modules/.prisma/
+# Copy the pre-generated Prisma Client from the main build to the pnpm structure
+# The deployed folder uses pnpm's node_modules structure, so we need to copy to the same location
+RUN PRISMA_CLIENT_PATH=$(find node_modules/.pnpm -name "@prisma+client*" -type d | head -1) && \
+    if [ -n "$PRISMA_CLIENT_PATH" ]; then \
+    mkdir -p "$PRISMA_CLIENT_PATH/node_modules/.prisma" && \
+    cp -r /app/node_modules/.pnpm/@prisma+client@*/node_modules/.prisma/client "$PRISMA_CLIENT_PATH/node_modules/.prisma/"; \
+    fi
 
 # ================================
 # Production Stage
