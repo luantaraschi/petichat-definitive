@@ -92,5 +92,5 @@ USER fastify
 # Expose port
 EXPOSE 3001
 
-# Start the server
-CMD ["node", "dist/server.js"]
+# Start the server (npm start triggers prestart script for migrations)
+CMD ["npm", "start"]
