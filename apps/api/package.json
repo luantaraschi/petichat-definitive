@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "npx tsx@4.7.0 src/server.ts",
         "build": "tsc",
-        "prestart": "npx prisma generate && npx prisma db push",
+        "prestart": "prisma generate && prisma db push",
         "start": "node dist/server.js",
         "lint": "eslint src --ext .ts",
         "test": "vitest",
