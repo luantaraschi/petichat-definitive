@@ -1,0 +1,159 @@
+{
+  "version": "1.0.0",
+  "project": "PetiChat",
+  "lastUpdated": "2026-01-20",
+
+  "sprint": {
+    "name": "MVP Bootstrap",
+    "startDate": "2026-01-20",
+    "endDate": "2026-01-27",
+    "status": "in_progress"
+  },
+
+  "tasks": {
+    "completed": [
+      {
+        "id": "T1",
+        "name": "Bootstrap repo Next.js + Tailwind + shadcn/ui + Auth.js",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T2",
+        "name": "Prisma schema + migrations + seed templates",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T3",
+        "name": "AppShell + Home + Templates page (UI with states)",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T4",
+        "name": "Wizard Stepper with Zustand store and Zod validation",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T5",
+        "name": "API routes with Zod validation",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T6",
+        "name": "TipTap editor + bubble menu + sidebar",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T7",
+        "name": "BullMQ worker + queue processors",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T8",
+        "name": "Docker configuration for Coolify",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T9",
+        "name": "Vitest + Playwright test setup",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      },
+      {
+        "id": "T10",
+        "name": "Multi-agent contracts (/ai folder)",
+        "status": "completed",
+        "completedAt": "2026-01-20"
+      }
+    ],
+    "inProgress": [],
+    "pending": [
+      {
+        "id": "T11",
+        "name": "Juris search endpoint + JurisCard UI",
+        "status": "pending",
+        "priority": "high"
+      },
+      {
+        "id": "T12",
+        "name": "Real AI integration (OpenAI/Anthropic)",
+        "status": "pending",
+        "priority": "medium"
+      },
+      {
+        "id": "T13",
+        "name": "Document export (DOCX/PDF)",
+        "status": "pending",
+        "priority": "high"
+      },
+      {
+        "id": "T14",
+        "name": "Jurisprudence ingestion pipeline",
+        "status": "pending",
+        "priority": "low"
+      },
+      {
+        "id": "T15",
+        "name": "Full E2E tests for wizard flow",
+        "status": "pending",
+        "priority": "medium"
+      }
+    ]
+  },
+
+  "verification": {
+    "checks": [
+      {
+        "check": "pnpm dev",
+        "description": "Opens Home with AppShell, no errors",
+        "status": "pass"
+      },
+      {
+        "check": "pnpm lint",
+        "description": "Passes ESLint",
+        "status": "pass"
+      },
+      {
+        "check": "pnpm typecheck",
+        "description": "Passes TypeScript",
+        "status": "pass"
+      },
+      {
+        "check": "pnpm test",
+        "description": "Passes Vitest unit tests",
+        "status": "pass"
+      },
+      {
+        "check": "docker-compose up",
+        "description": "Services healthy (postgres, redis)",
+        "status": "not_tested"
+      },
+      {
+        "check": "pnpm prisma migrate dev",
+        "description": "Creates tables with pgvector",
+        "status": "not_tested"
+      },
+      {
+        "check": "pnpm prisma db seed",
+        "description": "Seeds templates",
+        "status": "not_tested"
+      }
+    ]
+  },
+
+  "mockStatus": {
+    "aiIntegration": "mock",
+    "jurisprudenceIngest": "mock",
+    "documentGeneration": "mock",
+    "embeddings": "mock",
+    "fileUpload": "not_implemented",
+    "authProviders": "credentials_only"
+  }
+}

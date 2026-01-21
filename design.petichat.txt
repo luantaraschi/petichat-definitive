@@ -1,0 +1,281 @@
+================================================================================
+                     PETICHAT - DESIGN & UX/UI
+                       GUIA PARA REPLICAÇÃO
+================================================================================
+
+URL: https://app2.petichat.com.br/
+TIPO: Plataforma Jurídica com IA
+TEMAS: Dark Mode (padrão) + Light Mode
+
+================================================================================
+                        PALETA DE CORES
+================================================================================
+
+DARK MODE (PADRÃO):
+  Background Principal:   #0f1419
+  Background Cards:       #1a1f2e
+  Background Hover:       #2d3748
+  Texto Primário:         #ffffff
+  Texto Secundário:       #8b92a1
+  Verde (CTAs):           #1db854
+  Laranja (Badges):       #fbbf24
+  Roxo (Cards alt):       #c084fc
+  Borders:                #2d3748
+
+LIGHT MODE:
+  Background Principal:   #ffffff
+  Background Cards:       #f8f9fa
+  Background Hover:       #f0f2f5
+  Texto Primário:         #0f1419
+  Texto Secundário:       #6b7280
+  Verde (CTAs):           #10b981
+  Laranja (Badges):       #f59e0b
+  Roxo (Cards alt):       #a855f7
+  Borders:                #e5e7eb
+
+================================================================================
+                      TIPOGRAFIA & SPACING
+================================================================================
+
+Font:           Inter, Segoe UI, sans-serif
+Tamanhos:       12px (small) | 14px (base) | 16px (lg) | 18px+ (headings)
+Pesos:          400 (regular) | 600 (semibold) | 700 (bold)
+Padding:        24px (cards) | 16px (sidebar) | 10px 16px (buttons)
+Border-radius:  8px (cards) | 20px (pills) | 6px (buttons/inputs)
+Sombras:        0 1px 3px rgba(0,0,0,0.3) no dark mode
+
+================================================================================
+                      LAYOUT ESTRUTURAL
+================================================================================
+
+VIEWPORT:
+  ┌─────────────────────────────────────────┐
+  │ HEADER (60px fixo)                      │
+  ├──────────────┬──────────────────────────┤
+  │ SIDEBAR      │ CONTEÚDO PRINCIPAL       │
+  │ (260px)      │ (scrollável)             │
+  │ (scrollável) │                         │
+  │              │                         │
+  └──────────────┴──────────────────────────┘
+
+SIDEBAR:
+  - Logo PetiChat no topo com ícone
+  - 3 seções: Início | Principal | Complementar
+  - Menu items com hover (background #2d3748)
+  - Item ativo: fundo verde (#1db854)
+  - Badges "Novo" em verde
+  - Perfil do usuário no rodapé (avatar + nome + email)
+
+HEADER:
+  - Toggle sidebar (hamburguer)
+  - Logo/titulo da página
+  - Espaço flexível
+  - Ícones: notificações, ajuda, tema (sol/lua), configurações
+  - Border-bottom 1px #2d3748
+
+================================================================================
+                       COMPONENTES UI
+================================================================================
+
+1. CARDS DE AÇÃO
+   ┌──────────────────────┐
+   │ 🟠 Ícone (64x64)     │
+   │ Título Grande        │
+   │ Descrição            │
+   │ + Link Verde         │
+   └──────────────────────┘
+
+   - Background: #1a1f2e
+   - Padding: 24px
+   - Border: 1px #2d3748
+   - Border-radius: 8px
+   - Ícone cores: laranja, roxo ou verde
+   - Título: 18px bold branco
+   - Descrição: 14px cinza
+   - Link CTA: verde, com ícone "+"
+   - Hover: box-shadow + background mais claro
+
+2. BOTÕES DE FILTRO (Pills)
+   [Todos] [Admin] [Cível] [Penal]...
+   
+   - Padding: 10px 16px
+   - Border-radius: 20px
+   - Font-size: 14px
+   - Primeiro selecionado: verde + branco
+   - Resto: cinza escuro + cinza texto
+   - Hover: background mais claro
+
+3. CARDS DE TEMPLATES
+   📄 Título do Template          ⭐
+   Descrição breve da peça...
+   
+    🏷️ Popular
+
+   - Background: #1a1f2e
+   - Padding: 24px
+   - Border: 1px #2d3748
+   - Title: 16px bold branco
+   - Description: 14px cinza (2 linhas max)
+   - Heart icon: outline padrão, filled ao favorittar
+   - Badge Popular: laranja (#fbbf24)
+   - Hover: box-shadow + background mais claro
+
+4. CAROUSEL (Seção "Aprenda")
+   Slide 1: [Imagem] Título / 4 min [Aprender]
+   Slide 2: [Imagem] Título / 2 min [Aprender]
+   Slide 3: [Imagem] Título / 2 min [Aprender]
+   Slide 4: [Imagem] Título / 3 min [Aprender]
+
+   - Horizontal scrollável
+   - Min-width: 280px cada
+   - Imagem: 160px height
+   - Card background: #1a1f2e
+   - Título: 16px bold branco
+   - Duração: 12px cinza
+   - Botão: link verde
+   - Botão "Next" no canto superior direito
+
+5. STATS (Seção "A IA já trabalhou...")
+   ┌────┬────┬────┬────┐
+   │72h │ 3  │ 0  │ 0  │
+   ├────┼────┼────┼────┤
+   │Hrs │Peç │Int │Proc│
+   │Pop │IA  │IA  │Ana │
+   └────┴────┴────┴────┘
+
+   - 4 cards em grid
+   - Número: 40px bold branco
+   - Label: 14px cinza
+   - Background: #1a1f2e
+   - Border: 1px #2d3748
+
+================================================================================
+                   DESCRIÇÃO DAS PÁGINAS
+================================================================================
+
+HOME PAGE (/)
+───────────────────────────────────────────────────────────────────────
+
+1. WELCOME HEADER
+   - Logo PetiChat + "Bem-vindo(a) de volta, [Nome]!"
+   - Search bar: "O que você quer fazer agora?" com atalho Ctrl+K
+
+2. SEÇÃO "FAÇA AGORA" (3 Cards em grid)
+   - Crie uma Peça Jurídica (ícone laranja)
+     "Peça pronta, estruturada e fundamentada"
+     + Criar Peça
+   
+   - Analise um Processo (ícone roxo)
+     "Pontos-chave, riscos e estratégia"
+     + Iniciar Análise
+   
+   - Interaja com Agentes de IA (ícone verde)
+     "IA treinada por área do Direito"
+     + Ver Agentes
+
+3. SEÇÃO "ATALHOS" (3 Cards)
+   - Transcrição de Mídia: "Extraia texto de áudios e vídeos" [Abrir]
+   - Busca por Jurisprudências: "+9M Jurisprudências reais" [Abrir]
+   - Reescrita: "Reescreva com ajuda da IA" [Abrir]
+
+4. SEÇÃO "APRENDA" (Carousel 4 slides)
+   - Elaborar uma peça jurídica / 4 min de leitura
+   - Reescrever Textos / 2 min de vídeo
+   - Jurisprudências Reais / 2 min de vídeo
+   - Agentes Jurídicos de IA / 3 min de vídeo
+
+5. SEÇÃO "A IA JÁ TRABALHOU POR VOCÊ"
+   - 72h Horas Poupadas
+   - 3 Peças Criadas com IA
+   - 0 Interações com a IA
+   - 0 Processos Analisados
+
+6. BOTÃO FLUTUANTE
+   Ícone de chat verde no canto inferior direito
+   Texto: "Iniciar Conversa"
+
+═══════════════════════════════════════════════════════════════════════
+
+PÁGINA PEÇAS JURÍDICAS (/legal-templates)
+───────────────────────────────────────────────────────────────────────
+
+1. HEADER
+   Título: "Peças Jurídicas"
+   Subtítulo: "Modelos jurídicos estruturados conforme exigências legais"
+   Search bar: "Procure aqui a peça" [Ctrl+K]
+
+2. TABS
+   [+ Criar] [📋 Histórico]
+   Botão à direita: "Não encontrou a peça desejada? Clique aqui e sugira!"
+
+3. FILTROS (Pills horizontais)
+   [Todos] [Administrativo] [Ambiental] [Bancário] [Cível] [Condominial]
+   [Consumidor] [Digital] [Diversos] [Eleitoral] [Empresarial] [Extra...]
+   
+   Primeiro selecionado em verde. Ao clicar, filtra templates abaixo.
+
+4. LISTAGEM POR CATEGORIA
+   Para cada categoria ativa:
+   
+   ADMINISTRATIVO (5 templates)
+   ├─ 📄 Abertura de Processo Administrativo          ⭐ [Popular]
+   │  "Requeira a instauração de procedimento para..."
+   ├─ 📄 Pedido de Informações                        ⭐
+   │  "Solicite dados oficiais, resguardando o direito..."
+   ├─ 📄 Pedido de Reconsideração                     ⭐
+   │  "Solicite nova análise de decisão administrativa..."
+   ├─ 📄 Prorrogação de Prazo                         ⭐
+   │  "Justifique a necessidade de estender prazos..."
+   └─ 📄 Revisão de Ato Administrativo                ⭐
+      "Busque a correção de decisões estatais que violem..."
+
+   CÍVEL (32 templates)
+   ├─ 📄 Ação de Alimentos                            ⭐
+   ├─ 📄 Ação de Cobrança                             ⭐
+   ├─ 📄 Apelação                                     ⭐ [Popular]
+   └─ ... (29 templates a mais)
+
+   PENAL (32 templates)
+   ├─ 📄 Agravo em Execução Penal                     ⭐
+   ├─ 📄 Apelação Criminal                            ⭐ [Popular]
+   └─ ... (30 templates a mais)
+
+   OUTROS...
+
+   Cada template é clicável para abrir editor.
+   Heart icon favorita (muda de outline para filled).
+   Badge "Popular" em laranja para templates mais usados.
+
+═══════════════════════════════════════════════════════════════════════
+
+INTERAÇÕES GLOBAIS
+───────────────────────────────────────────────────────────────────────
+
+HOVER:
+  - Cards: box-shadow 0 2px 8px rgba(0,0,0,0.4) + background #2d3748
+  - Links: cor mais clara (verde #10b981)
+  - Botões: background mais claro + transition 200ms
+  - Menu items: background #2d3748
+
+CLIQUE:
+  - Sidebar items: background verde (#1db854) + texto branco
+  - Favorites (heart): icon fica filled laranja (#fbbf24)
+  - Pills: background verde, texto branco
+  - Nenhuma animação de press/bounce
+
+TEMA CLARO/ESCURO:
+  Ícone sol/lua no header. Clicando, todas as cores invertam:
+  - Backgrounds: branco/cinza claro
+  - Textos: preto/cinza escuro
+  - Acentos: mais saturados
+  - Sombras: mais suaves
+
+SCROLLING:
+  - Smooth scroll habilitado
+  - Scrollbar customizado: track #2d3748, thumb #3f4757
+  - Conteúdo principal scrollável independentemente da sidebar
+
+RESPONSIVIDADE:
+  - Desktop (1024px+): sidebar visível, 3 colunas de cards
+  - Tablet (768px-1023px): sidebar togglável, 2 colunas
+  - Mobile (< 768px): sidebar hidden (hamburger), 1 coluna

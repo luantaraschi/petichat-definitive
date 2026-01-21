@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "project": "PetiChat",
+  "description": "Multi-tenant SaaS for Brazilian lawyers to create legal petitions with AI support",
+
+  "entities": {
+    "User": {
+      "description": "Application user (lawyer or staff)",
+      "fields": ["id", "email", "name", "passwordHash", "emailVerified", "image"],
+      "relations": ["memberships", "cases", "documents", "auditLogs"]
+    },
+    "Organization": {
+      "description": "Law firm or solo practice",
+      "fields": ["id", "name", "slug", "plan", "logoUrl"],
+      "relations": ["memberships", "cases", "documents", "auditLogs", "jurisprudences"]
+    },
+    "Membership": {
+      "description": "User-Organization relationship with role",
+      "fields": ["id", "userId", "organizationId", "role"],
+      "enums": { "role": ["OWNER", "ADMIN", "MEMBER"] }
+    },
+    "Template": {
+      "description": "Legal petition template",
+      "fields": ["id", "name", "description", "category", "area", "rito", "isPopular", "structure", "prompts"],
+      "relations": ["cases"]
+    },
+    "Case": {
+      "description": "Legal case being prepared",
+      "fields": ["id", "title", "clientName", "status", "facts", "tribunal", "foro", "valorCausa", "gratuidadeJustica", "tom", "triageResponses", "currentStep", "completedSteps"],
+      "enums": { "status": ["DRAFT", "TRIAGE", "THESES", "JURISPRUDENCE", "EDITING", "COMPLETED", "ARCHIVED"] },
+      "relations": ["template", "attachments", "theses", "citations", "documents"]
+    },
+    "Thesis": {
+      "description": "Legal argument or claim",
+      "fields": ["id", "title", "content", "type", "status", "order", "aiGenerated"],
+      "enums": {
+        "type": ["THESIS", "CLAIM", "PRELIMINARY"],
+        "status": ["PENDING", "APPROVED", "REJECTED", "NEEDS_REVISION"]
+      },
+      "relations": ["case", "citations"]
+    },
+    "Jurisprudence": {
+      "description": "Court decision record (required: tribunal, numero, dataJulgamento, fonte)",
+      "fields": ["id", "tribunal", "orgaoJulgador", "numero", "dataJulgamento", "relator", "ementa", "inteiro", "fonte", "linkOriginal", "area", "assuntos"],
+      "relations": ["organization", "chunks"]
+    },
+    "JurisprudenceChunk": {
+      "description": "Searchable excerpt from jurisprudence",
+      "fields": ["id", "content", "chunkType", "embedding", "searchVector"],
+      "relations": ["jurisprudence", "citations"]
+    },
+    "Citation": {
+      "description": "Link between jurisprudence chunk and case/thesis/document",
+      "fields": ["id", "excerpt", "position", "note"],
+      "relations": ["case", "chunk", "thesis", "document"]
+    },
+    "Document": {
+      "description": "Generated petition document",
+      "fields": ["id", "title", "content", "version", "status", "lastExportedAt", "exportFormat"],
+      "enums": { "status": ["DRAFT", "REVIEW", "FINAL", "EXPORTED"] },
+      "relations": ["case", "citations"]
+    },
+    "AuditLog": {
+      "description": "Action and AI usage tracking",
+      "fields": ["id", "action", "entityType", "entityId", "aiModel", "tokensInput", "tokensOutput", "estimatedCost", "metadata"]
+    }
+  },
+
+  "routes": {
+    "auth": {
+      "POST /api/auth/register": "Create new user account",
+      "POST /api/auth/[...nextauth]": "NextAuth.js routes"
+    },
+    "templates": {
+      "GET /api/templates": "List all templates"
+    },
+    "cases": {
+      "POST /api/cases": "Create new case",
+      "GET /api/cases": "List user's cases",
+      "GET /api/cases/:id": "Get case details",
+      "PATCH /api/cases/:id": "Update case",
+      "POST /api/cases/:id/triage": "Submit triage responses",
+      "POST /api/cases/:id/theses/suggest": "Get AI-suggested theses"
+    },
+    "jurisprudence": {
+      "POST /api/juris/search": "Hybrid search jurisprudence"
+    },
+    "documents": {
+      "POST /api/documents/generate": "Queue document generation"
+    },
+    "editor": {
+      "POST /api/editor/inline-action": "Execute AI inline action"
+    }
+  },
+
+  "queues": {
+    "generate-document": {
+      "description": "Generate petition document from case data",
+      "concurrency": 2,
+      "processor": "worker/processors/generate-document.ts"
+    },
+    "ingest-juris": {
+      "description": "Ingest jurisprudence from external sources",
+      "concurrency": 1,
+      "processor": "worker/processors/ingest-juris.ts"
+    },
+    "generate-embeddings": {
+      "description": "Generate vector embeddings for jurisprudence chunks",
+      "concurrency": 3,
+      "processor": "worker/processors/generate-embeddings.ts"
+    }
+  },
+
+  "aiActions": {
+    "inline": {
+      "rewrite": "Rewrite text for clarity",
+      "expand": "Add detail and legal argumentation",
+      "shorten": "Summarize while preserving meaning",
+      "formalize": "Convert to formal legal language",
+      "cite": "Add jurisprudence citation",
+      "create_topic": "Create structured legal section",
+      "create_claims": "Generate legal claims/requests"
+    },
+    "batch": {
+      "suggest_theses": "Generate thesis suggestions based on case facts",
+      "generate_document": "Generate full petition document"
+    }
+  }
+}

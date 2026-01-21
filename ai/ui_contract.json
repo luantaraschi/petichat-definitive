@@ -1,0 +1,185 @@
+{
+  "version": "1.0.0",
+  "project": "PetiChat",
+
+  "theme": {
+    "dark": {
+      "background": "#0f1419",
+      "card": "#1a1f2e",
+      "accent": "#1db854",
+      "text": "#ffffff",
+      "muted": "#8b92a1",
+      "border": "#2d3748",
+      "badge": "#fbbf24",
+      "alt": "#c084fc"
+    },
+    "light": {
+      "background": "#ffffff",
+      "card": "#f8f9fa",
+      "accent": "#10b981",
+      "text": "#0f1419",
+      "muted": "#6b7280",
+      "border": "#e5e7eb",
+      "badge": "#fbbf24",
+      "alt": "#c084fc"
+    }
+  },
+
+  "layout": {
+    "header": {
+      "height": "60px",
+      "position": "sticky top-0",
+      "elements": ["toggle", "logo", "search", "notifications", "help", "theme", "settings", "avatar"]
+    },
+    "sidebar": {
+      "width": "260px",
+      "collapsible": true,
+      "sections": ["logo", "menu", "user-profile"]
+    },
+    "main": {
+      "scrollable": true,
+      "maxWidth": "1200px"
+    }
+  },
+
+  "components": {
+    "ActionCard": {
+      "description": "Quick action card on home page",
+      "props": ["title", "description", "icon", "onClick"],
+      "states": ["default", "hover", "disabled"]
+    },
+    "TemplateCard": {
+      "description": "Template selection card",
+      "props": ["template", "isPopular", "onClick"],
+      "states": ["default", "hover", "selected", "disabled"]
+    },
+    "FilterPill": {
+      "description": "Category filter button",
+      "props": ["label", "active", "onClick"],
+      "states": ["default", "active", "hover"]
+    },
+    "StatsCard": {
+      "description": "Statistics display card",
+      "props": ["title", "value", "change", "icon"],
+      "states": ["default", "loading"]
+    },
+    "LearnCarouselCard": {
+      "description": "Learning content carousel item",
+      "props": ["title", "description", "thumbnail", "duration"],
+      "states": ["default", "hover"]
+    },
+    "WizardStepper": {
+      "description": "Multi-step wizard navigation",
+      "props": ["steps", "currentStep", "completedSteps", "onStepClick"],
+      "states": ["default", "active", "completed", "disabled"]
+    },
+    "ThesisBlock": {
+      "description": "Thesis/claim editing block",
+      "props": ["thesis", "onUpdate", "onDelete", "onApprove", "onReject"],
+      "states": ["pending", "approved", "rejected", "needs_revision", "editing"]
+    },
+    "JurisCard": {
+      "description": "Jurisprudence search result card",
+      "props": ["jurisprudence", "onSelect", "selected"],
+      "states": ["default", "hover", "selected", "expanded"]
+    },
+    "CitationCard": {
+      "description": "Citation display in editor (TipTap node)",
+      "props": ["tribunal", "numero", "dataJulgamento", "relator", "orgaoJulgador", "excerpt", "fonte", "linkOriginal"],
+      "states": ["default", "hover", "expanded"]
+    },
+    "PetitionEditor": {
+      "description": "TipTap-based document editor",
+      "props": ["content", "onSave", "readOnly"],
+      "states": ["editing", "saving", "error", "readOnly"]
+    },
+    "EditorToolbar": {
+      "description": "Editor formatting toolbar",
+      "props": ["editor", "onSave"],
+      "states": ["default", "saving"]
+    },
+    "BubbleMenu": {
+      "description": "AI actions on text selection",
+      "props": ["editor"],
+      "states": ["default", "processing"]
+    },
+    "SidebarPanel": {
+      "description": "Editor sidebar with theses/citations/outline",
+      "props": ["tab", "theses", "citations"],
+      "states": ["theses", "citations", "outline"]
+    }
+  },
+
+  "states": {
+    "loading": {
+      "description": "Data is being fetched",
+      "indicator": "Skeleton or spinner",
+      "interaction": "disabled"
+    },
+    "empty": {
+      "description": "No data to display",
+      "indicator": "Empty state illustration + message",
+      "interaction": "CTA button if applicable"
+    },
+    "error": {
+      "description": "Operation failed",
+      "indicator": "Error message with retry option",
+      "interaction": "Retry button"
+    },
+    "disabled": {
+      "description": "Action not available",
+      "indicator": "Reduced opacity, cursor not-allowed",
+      "interaction": "none"
+    },
+    "success": {
+      "description": "Operation completed",
+      "indicator": "Toast notification",
+      "duration": "3000ms"
+    }
+  },
+
+  "wizardSteps": [
+    {
+      "step": 0,
+      "name": "Template",
+      "description": "Choose petition template and context",
+      "fields": ["templateId", "tribunal", "foro"]
+    },
+    {
+      "step": 1,
+      "name": "Fatos",
+      "description": "Describe case facts",
+      "fields": ["facts", "attachments"]
+    },
+    {
+      "step": 2,
+      "name": "Triagem",
+      "description": "Answer AI-generated questions",
+      "fields": ["triageResponses"]
+    },
+    {
+      "step": 3,
+      "name": "Preliminares",
+      "description": "Set case parameters",
+      "fields": ["gratuidadeJustica", "valorCausa", "tom"]
+    },
+    {
+      "step": 4,
+      "name": "Teses",
+      "description": "Define legal arguments and claims",
+      "fields": ["theses"]
+    },
+    {
+      "step": 5,
+      "name": "Jurisprudência",
+      "description": "Select supporting jurisprudence",
+      "fields": ["citations"]
+    },
+    {
+      "step": 6,
+      "name": "Editor",
+      "description": "Edit final document",
+      "fields": ["content"]
+    }
+  ]
+}
